@@ -11,6 +11,7 @@ export default function MyTasksPage() {
   const [newTask, setNewTask] = useState('');
   const [status, setStatus] = useState('Pending');
 
+  console.log('error');
   useEffect(() => {
     if (isReady) {
       fetchTasks();
