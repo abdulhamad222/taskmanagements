@@ -11,7 +11,6 @@ export default function MyTasksPage() {
   const [newTask, setNewTask] = useState('');
   const [status, setStatus] = useState('Pending');
 
-  console.log('error');
   useEffect(() => {
     if (isReady) {
       fetchTasks();
@@ -30,34 +29,34 @@ export default function MyTasksPage() {
     }
   };
 
-  const handleAddTask = async (e) => {
-    e.preventDefault();
-    if (!newTask.trim() || !user) return;
+   const handleAddTask = async (e) => {
+  e.preventDefault();
 
-    try {
-      const res = await fetch('/api/my-tasks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: newTask,
-          status,
-          userId: user.email, // ✅ Include userId for task + notification
-        }),
-      });
+  try {
+    const res = await fetch('/api/my-tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: newTask,
+        status,
+        userId: user.email,
+      }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (res.ok) {
-        setTasks([data.task, ...tasks]);
-        setNewTask('');
-        setStatus('Pending');
-      } else {
-        console.error(data.error);
-      }
-    } catch (error) {
-      console.error('Add task error:', error);
+    if (res.ok) {
+      setTasks([data.task, ...tasks]);
+      setNewTask('');
+      setStatus('Pending');
+    } else {
+      console.error(data.error);
     }
-  };
+  } catch (error) {
+    console.error('Add task error:', error);
+  }
+};
+
 
   return (
     <main className="min-h-screen bg-[#0e0e0e] text-white p-4 sm:p-6 md:p-10">

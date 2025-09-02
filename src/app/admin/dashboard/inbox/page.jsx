@@ -25,7 +25,7 @@ export default function InboxPage() {
   useEffect(() => {
     async function fetchMessages() {
       if (!selectedUser || !user) return;
-      const res = await fetch(`/api/messages?with=${selectedUser._id}`, {
+      const res = await fetch(`/api/message?with=${selectedUser._id}`, {
         headers: {
           userid: user.email, // ✅ send current user's ID
         },
@@ -39,7 +39,7 @@ export default function InboxPage() {
   const handleSend = async () => {
     if (!newMessage.trim() || !user || !selectedUser) return;
 
-    const res = await fetch('/api/messages', {
+    const res = await fetch('/api/message', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

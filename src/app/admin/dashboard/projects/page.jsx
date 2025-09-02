@@ -30,7 +30,10 @@ export default function ProjectsPage() {
 
   const handleAddProject = async (e) => {
     e.preventDefault();
-    if (!newProject.trim() || !user) return;
+    if (!newProject.trim()) {
+      console.error("No project title");
+      return;
+    }
 
     try {
       const res = await fetch('/api/projects', {

@@ -7,7 +7,6 @@ const TaskSchema = new mongoose.Schema({
     enum: ['Pending', 'In Progress', 'Completed'],
     default: 'Pending',
   },
-  userId: { type: String, required: true },
 }, { timestamps: true });
 
 export default mongoose.models.Task || mongoose.model('Task', TaskSchema);

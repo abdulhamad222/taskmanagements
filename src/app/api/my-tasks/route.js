@@ -15,19 +15,22 @@ export async function GET() {
 
 export async function POST(req) {
   try {
-    const { title, status, userId } = await req.json(); // userId = user's email
+    const { title, status, userId } = await req.json();
 
-    if (!title || !userId) {
-      return NextResponse.json({ error: 'Title and userId are required' }, { status: 400 });
+    if (!title) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
 
     await connectDB();
 
-    const task = await Task.create({ title, status });
+    const task = await Task.create({
+      title,
+      status,
+      userId: userId || null, // ✅ Store null if no userId
+    });
 
-    // ✅ Create notification for the user who added the task
     await Notification.create({
-      userId,
+      userId: userId || 'admin', // Optional: Mark admin-created tasks
       type: 'task',
       message: `New task "${title}" uploaded.`,
     });
@@ -37,3 +40,4 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Failed to create task' }, { status: 500 });
   }
 }
+

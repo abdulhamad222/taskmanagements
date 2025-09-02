@@ -36,22 +36,27 @@ export async function GET() {
 }
 
 // POST: Add new project and create notification
+// POST: Add new project and create notification
 export async function POST(req) {
   try {
     const { title, description, userId } = await req.json();
 
-    if (!title || !userId) {
+    if (!title) {
       return NextResponse.json(
-        { success: false, error: 'Title and userId are required' },
+        { success: false, error: 'Title is required' },
         { status: 400 }
       );
     }
 
-    const newProject = await Project.create({ title, description });
+    // ✅ Create a new project
+    const newProject = await Project.create({
+      title,
+      description: description || '',
+    });
 
-    // ✅ Create notification for the user who created the project
+    // ✅ Create notification (fallback for admin)
     await Notification.create({
-      userId,
+      userId: userId || 'admin',
       type: 'project',
       message: `New project "${title}" created.`,
     });
